@@ -1,0 +1,35 @@
+{
+    "students": [
+        {
+            "id": "01",
+            "name": "Abdulloh",
+            "age": 14,
+            "phone": "+998 90 766 1303",
+            "guruh": "React js Bootcamp N11",
+            "teacher": "Arslonbek Ro'ziboyev",
+            "address": "Chilonzor 8 kvartal"
+        }
+    ],
+    "teacher": [
+        {
+            "id": "123123",
+            "name": "Javohir",
+            "course": "frontend"
+        }
+    ],
+    "group": [
+        {
+            "id": "123",
+            "name": "Standart N1",
+            "course": "Backend"
+        }
+    ],
+    "course": [
+        {
+            "id": "1234",
+            "name": "Standart Fullstack",
+            "duration": "8 month",
+            "price": "100$"
+        }
+    ]
+}
