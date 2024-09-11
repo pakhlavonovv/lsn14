@@ -16,14 +16,9 @@ const style = {
   p: 4,
 };
 
-export default function KeepMountedModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+export default function KeepMountedModal({open,handleClose}) {
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         keepMounted
         open={open}

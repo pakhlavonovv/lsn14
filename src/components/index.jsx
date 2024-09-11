@@ -1,3 +1,3 @@
 import TeacherTable from './teacher-table'
 import TeacherModal from  './teacher-modal'
-export {TeacherTable}
+export {TeacherTable, TeacherModal}
