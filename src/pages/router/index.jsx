@@ -12,10 +12,12 @@ const Index = () => {
         createRoutesFromElements(
           <Route path="/" element={<App />}>  
             <Route index element={<SignIn/>}/>
-            <Route path='admin' element={<AdminLayout/>}/>
-            <Route path="teacher" element={<Teacher/>}/>
-            <Route path="student" element={<Student/>}/>
-            <Route/>
+
+            <Route path="admin" element={<AdminLayout/>}>
+                <Route index element={<Teacher/>}/>
+                <Route path="student" element={<Student/>}/>
+            </Route>
+
             <Route path='student-layout' element={<StudentLayout/>}/>
           </Route>
         )

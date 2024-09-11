@@ -5,7 +5,7 @@ const admin = [
     },
     {
         content: "Student",
-        path: "/student"
+        path: "/admin/student"
     },
 ]
 const student = [
