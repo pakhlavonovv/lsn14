@@ -5,6 +5,8 @@ import TextField from '@mui/material/TextField';
 import './sass/style.scss'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup'
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import Notification from '../utils/notification';
 
 const Index = () => {
@@ -12,30 +14,29 @@ const Index = () => {
   const [disabled, setDisabled] = useState(false )
   const [count, setCount] = useState(0)
   const [time, setTime] = useState(10)
-  useEffect(() => {
-    if(count === 3){
-      setInterval(() => {
-          setTime(prev => prev - 1)
-      }, 1000)
-    }
-  }, [count])
   const navigate = useNavigate()
-  const handleChange = (event) => {
-    const {name, value} = event.target
-    setForm({...form, [name]: value})
+  const initalValues = {
+    name: "",
+    password: "",
   }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if(form.username == 'Admin'){
+  const signInValidationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    password: Yup.string()
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+        "Password must be at least 6 characters and contain at least one uppercase and one lowercase letter"
+      )
+      .required("Password is required"),
+  });
+  const handleSubmit = async(value) => {
+      if(value.name == 'Admin' && value.password == 'Admin123'){
         navigate('/admin')
-        Notification({title: "Success", type: 'success '})
-
-    } else if(form.username == 'Student'){
-      navigate('/student')
-    } else {
-      Notification({title: 'Somewhere have an error, please try again', type: 'error'})
-      setCount(prev => prev + 1)
-    }
+      } else{
+        Notification({
+          title: "Password or name is incorrect",
+          type: "error"
+        })
+      }
   } 
 
   return (
@@ -49,23 +50,43 @@ const Index = () => {
                 <h1 className='text-center'>Sign In</h1>
               </div>
               <div className="card-body">
-                <form id='form' style={{display: "flex", flexDirection: 'column', gap: '6px'}} onSubmit={handleSubmit}>
-              <TextField disabled={count == 3 ? true : false} fullWidth label="Username" name='username' onChange={handleChange}/>
-              <TextField fullWidth type='email' label="Email" name='email' onChange={handleChange}/>
-              <TextField fullWidth type='password' label="Password" name='password' onChange={handleChange}/>
-              <TextField fullWidth type='confirm_pass' label="Confirm Password" name='confirm_password' onChange={handleChange}/>
-                </form>
+                <Formik initialValues={initalValues} onSubmit={handleSubmit} validationSchema={signInValidationSchema}>
+                  <Form id='sign-in'>
+                    <Field
+                    name="name"
+                    as={TextField}
+                    type="text"
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    label="Name"
+                    helperText={
+                      <ErrorMessage name='name' component="p" className='text-danger fs-6'/>
+                    }
+                    />
+                    <Field 
+                    name="password"
+                    as={TextField}
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                    label="Password"
+                    helperText={
+                    <ErrorMessage 
+                      name='password'
+                      component="p"
+                      className='text-danger fs-6'
+                    />
+                    }
+                    />
+                  </Form>
+                </Formik>
 
               </div>
               <div className="card-footer">
                 <center>
-              <Button style={{width: "130px"}} variant="contained" type='submit' form='form'>Save</Button>
-                </center>
-                <p className='text-center mt-2'>
-                  {
-                    count === 3 && `Mal'um bir muddat kutib turing! ${time}`
-                  }
-                </p>
+              <Button variant='contained' color='success' type='submit' form="sign-in">Save</Button>
+                </center>                
               </div>
             </div>
           </div>
