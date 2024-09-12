@@ -2,7 +2,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import { TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 
 const style = {
   position: 'absolute',
@@ -16,26 +18,48 @@ const style = {
   p: 4,
 };
 
-export default function KeepMountedModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function KeepMountedModal({open, handleClose, course}) {
+  const [form, setForm] = useState({})
+  const handleChange = (event) => {
+      const {name, value} = event.target
+      setForm({...form, [name]: value})
+  }
+  const handleSubmit = () =>{
+    console.log(form)
+  }
   return (
     <div>
       <Modal
         keepMounted
         open={open}
-        onClose={handleClose}map
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
         <Box sx={style}>
-          <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <form className='d-flex flex-column gap-4' onSubmit={handleSubmit}>
+          <div className='d-flex flex-column gap-2'>
+          <InputLabel id="demo-simple-select-label">Course</InputLabel>
+          <Select
+          labelId='demo-simple-select-labe'
+          fullWidth
+          id="demo-simple-select"
+          name='age'
+          label="Course name"
+          onChange={handleChange}
+        >
+          {
+            course.map((item, index) => {
+              return <MenuItem value={item.id}>{item.name}</MenuItem>
+            })
+          }
+        </Select>
+        <TextField fullWidth label="Teacher name" name='name' onChange={handleChange} id="fullWidth" />
+        <Button style={{
+          width: "140px"
+        }} variant='contained' color='primary' onClick={handleSubmit}>Save</Button>
+          </div>
+          </form>
         </Box>
       </Modal>
     </div>

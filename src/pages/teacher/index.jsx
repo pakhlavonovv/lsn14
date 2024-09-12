@@ -6,6 +6,7 @@ import Button from "@mui/material/Button/Button"
 
 const Index = () => {
   const [data, setData] = useState([])
+  const [course, setCourse] = useState([])
   const [open, setOpen] = useState(false)
     useEffect(()=> {
         axios.get("http://localhost:3000/teacher").then(res=> {
@@ -15,11 +16,20 @@ const Index = () => {
     const handleClose =()=> {
       setOpen(false)
     }
+    const openModal = async() => {
+      const res = await axios.get("http://localhost:3000/course").then(res => {
+        setCourse(res?.data)
+      })
+      setOpen(true)
+
+    }
   return (
     <div>
-    <TeacherTable open={open} handleClose={handleClose}/>
-    <Button variant="contained" color="primary" onClick={()=> setOpen(true)}>Open Modal</Button>
-    <TeacherModal data={data}/>
+    <TeacherTable data={data}/>
+    <Button variant="contained" color="primary" onClick={openModal} style={{
+      marginTop: "20px"
+    }}>Open Modal</Button>
+    <TeacherModal  open={open} handleClose={handleClose} course={course}/>
       </div>
   )
 }
