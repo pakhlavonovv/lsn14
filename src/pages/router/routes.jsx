@@ -10,6 +10,10 @@ const admin = [
     {
         content: "Course",
         path: "/admin/course",
+    },
+    {
+        content: "Group",
+        path: "/admin/group",
     }
 ]
 const student = [

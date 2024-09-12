@@ -4,7 +4,8 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup'; // Yup import qilamiz
 import axios from 'axios';
 
 const style = {
@@ -19,19 +20,22 @@ const style = {
   p: 4,
 };
 
-export default function KeepMountedModal({open, handleClose, course}) {
-  const [form, setForm] = useState({})
-  const handleChange = (event) => {
-      const {name, value} = event.target
-      setForm({...form, [name]: value})
-  }
-  const handleSubmit = async() =>{
+// Yup validatsiya sxemasini yaratamiz
+const validationSchema = Yup.object().shape({
+  course: Yup.string().required('Course name is required'),
+  name: Yup.string().required('Teacher name is required').min(3, 'Teacher name must be at least 3 characters'),
+});
+
+export default function KeepMountedModal({ open, handleClose, course }) {
+  const handleSubmit = async (values, { resetForm }) => {
     try {
-      const res = await axios.post("http://localhost:3000/teacher", form)
+      const res = await axios.post("http://localhost:3000/teacher", values);
+      resetForm(); // Formani yuborganingizdan keyin tozalash uchun
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-  }
+  };
+
   return (
     <div>
       <Modal
@@ -42,29 +46,56 @@ export default function KeepMountedModal({open, handleClose, course}) {
         aria-describedby="keep-mounted-modal-description"
       >
         <Box sx={style}>
-          <form className='d-flex flex-column gap-4' onSubmit={handleSubmit}>
-          <div className='d-flex flex-column gap-2'>
-          <InputLabel id="demo-simple-select-label">Course</InputLabel>
-          <Select
-          labelId='demo-simple-select-labe'
-          fullWidth
-          id="demo-simple-select"
-          name='age'
-          label="Course name"
-          onChange={handleChange}
-        >
-          {
-            course.map((item, index) => {
-              return <MenuItem value={item.name} key={index}>{item.name}</MenuItem>
-            })
-          }
-        </Select>
-        <TextField fullWidth label="Teacher name" name='name' onChange={handleChange} id="fullWidth" />
-        <Button style={{
-          width: "140px"
-        }} variant='contained' color='primary' onClick={handleSubmit}>Save</Button>
-          </div>
-          </form>
+          <Formik
+            initialValues={{ course: '', name: '' }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ values, handleChange, errors, touched }) => (
+              <Form className="d-flex flex-column gap-4">
+                <div className="d-flex flex-column gap-2">
+                  <InputLabel id="demo-simple-select-label">Course</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-labe"
+                    fullWidth
+                    id="demo-simple-select"
+                    name="course"
+                    value={values.course}
+                    onChange={handleChange}
+                    error={touched.course && Boolean(errors.course)}
+                  >
+                    {course.map((item, index) => {
+                      return <MenuItem value={item.name} key={index}>{item.name}</MenuItem>;
+                    })}
+                  </Select>
+                  {touched.course && errors.course && (
+                    <Typography color="error">{errors.course}</Typography>
+                  )}
+                  
+                  <TextField
+                    fullWidth
+                    label="Teacher name"
+                    name="name"
+                    value={values.name}
+                    onChange={handleChange}
+                    error={touched.name && Boolean(errors.name)}
+                  />
+                  {touched.name && errors.name && (
+                    <Typography color="error">{errors.name}</Typography>
+                  )}
+                  
+                  <Button
+                    style={{ width: '140px' }}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    Save
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </Box>
       </Modal>
     </div>

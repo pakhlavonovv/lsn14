@@ -4,4 +4,5 @@ import StudentLayout from './student-layout'
 import Student from './student'
 import Teacher from './teacher'
 import Course from './course'
-export {SignIn, AdminLayout, StudentLayout, Student, Teacher, Course}
+import  Group  from './group'
+export {SignIn, AdminLayout, StudentLayout, Student, Teacher, Course, Group}
