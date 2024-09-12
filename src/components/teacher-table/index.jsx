@@ -31,7 +31,7 @@ export default function BasicTable({data}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
+          {data?.map((row, index) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

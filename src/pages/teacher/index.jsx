@@ -11,7 +11,7 @@ const Index = () => {
         axios.get("http://localhost:3000/teacher").then(res=> {
             setData(res?.data)
         })
-    })
+    }, [])
     const handleClose =()=> {
       setOpen(false)
     }
