@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import axios from 'axios';
 
 const style = {
   position: 'absolute',
@@ -24,8 +25,12 @@ export default function KeepMountedModal({open, handleClose, course}) {
       const {name, value} = event.target
       setForm({...form, [name]: value})
   }
-  const handleSubmit = () =>{
-    console.log(form)
+  const handleSubmit = async() =>{
+    try {
+      const res = await axios.post("http://localhost:3000/teacher", form)
+    } catch (error) {
+        console.log(error)
+    }
   }
   return (
     <div>
@@ -50,7 +55,7 @@ export default function KeepMountedModal({open, handleClose, course}) {
         >
           {
             course.map((item, index) => {
-              return <MenuItem value={item.id}>{item.name}</MenuItem>
+              return <MenuItem value={item.name} key={index}>{item.name}</MenuItem>
             })
           }
         </Select>
