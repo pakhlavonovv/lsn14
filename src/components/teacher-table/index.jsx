@@ -4,7 +4,9 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
+import Button from '@mui/material/Button/Button';
 import TableRow from '@mui/material/TableRow';
+import axios from 'axios';
 import Paper from '@mui/material/Paper';
 
 function createData(name, calories, fat, carbs, protein) {
@@ -18,7 +20,14 @@ const rows = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
-
+const deleteItem = (id) => {
+  try {
+    axios.delete(`http://localhost:3000/teacher/${id}`)
+    window.location.reload()
+  } catch (error) {
+    console.log(error)
+  }
+}
 export default function BasicTable({data}) {
   return (
     <TableContainer component={Paper}>
@@ -28,6 +37,7 @@ export default function BasicTable({data}) {
           <TableCell align="center">T/R</TableCell>
             <TableCell align="center">Teacher Name</TableCell>
             <TableCell align="center">Course name</TableCell>
+            <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -40,6 +50,7 @@ export default function BasicTable({data}) {
 
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.course}</TableCell>
+              <TableCell align="center"><Button onClick={()=> deleteItem(row.id)} variant='contained' color='error'>Delete</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup'; // Yup import qilamiz
+import * as Yup from 'yup';
 import axios from 'axios';
 
 const style = {
@@ -31,6 +31,7 @@ export default function KeepMountedModal({ open, handleClose, course }) {
     try {
       const res = await axios.post("http://localhost:3000/teacher", values);
       resetForm(); // Formani yuborganingizdan keyin tozalash uchun
+      window.location.reload()
     } catch (error) {
       console.log(error);
     }
