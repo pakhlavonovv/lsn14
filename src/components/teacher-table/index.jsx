@@ -8,29 +8,35 @@ import Button from '@mui/material/Button/Button';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
+import { TeacherModal } from '@components'
+import { useState } from 'react';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-const deleteItem = (id) => {
-  try {
-    axios.delete(`http://localhost:3000/teacher/${id}`)
-    window.location.reload()
-  } catch (error) {
-    console.log(error)
-  }
-}
 export default function BasicTable({data}) {
+  const [open, setOpen] = useState(false)
+  const handleClose =()=> {
+    setOpen(false)
+  }
+  const deleteItem = (id) => {
+    try {
+      axios.delete(`http://localhost:3000/teacher/${id}`)
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const editItem = (id) => {
+    setOpen(true)
+    try {
+      axios.put(`http://localhost:3000/teacher/${id}`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
+
     <TableContainer component={Paper}>
+      <TeacherModal open={open} handleClose={handleClose}/>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -50,7 +56,9 @@ export default function BasicTable({data}) {
 
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.course}</TableCell>
-              <TableCell align="center"><Button onClick={()=> deleteItem(row.id)} variant='contained' color='error'>Delete</Button></TableCell>
+              <TableCell align="center"><Button onClick={()=> deleteItem(row.id)} variant='contained' color='error'>Delete</Button>
+              <Button className='ms-2' onClick={()=> editItem(row.id)} variant='contained' color='success'>Edit</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

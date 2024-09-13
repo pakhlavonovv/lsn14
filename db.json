@@ -10,7 +10,21 @@
       "address": "Chilonzor 8 kvartal"
     }
   ],
-  "teacher": [],
+  "teacher": [
+    {
+      "id": "be62"
+    },
+    {
+      "id": "b692",
+      "course": "Standart Fullstack",
+      "name": "Ahmadd"
+    },
+    {
+      "id": "bf12",
+      "course": "Standart Fullstack",
+      "name": "qwerghj"
+    }
+  ],
   "group": [
     {
       "id": "123",

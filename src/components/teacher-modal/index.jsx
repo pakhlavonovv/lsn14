@@ -20,7 +20,6 @@ const style = {
   p: 4,
 };
 
-// Yup validatsiya sxemasini yaratamiz
 const validationSchema = Yup.object().shape({
   course: Yup.string().required('Course name is required'),
   name: Yup.string().required('Teacher name is required').min(3, 'Teacher name must be at least 3 characters'),
@@ -65,7 +64,7 @@ export default function KeepMountedModal({ open, handleClose, course }) {
                     onChange={handleChange}
                     error={touched.course && Boolean(errors.course)}
                   >
-                    {course.map((item, index) => {
+                    {course?.map((item, index) => {
                       return <MenuItem value={item.name} key={index}>{item.name}</MenuItem>;
                     })}
                   </Select>
